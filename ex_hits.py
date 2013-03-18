@@ -90,18 +90,12 @@ def hits_score(matrix, iterations=4, normalize=True, show=True):
 
 def hits_score(matrix, iterations=4, normalize=True, show=True):
 	n = len(matrix)
-	H = np.array([1.0 for x in range(n)])
-	A = np.array([1.0 for x in range(n)])
+	H = np.ones(n)
+	A = np.ones(n)
 	E = np.array(matrix)
+	Et = E.transpose()
 	for t in range(iterations):
-		atmp = np.copy(A)
-		htmp = np.copy(H)
-		# Computing t-h : hi = SUM(j=[1:N] e(i,j)*a(j)t-1		
-		for i in range(n):
-			H = np.dot(E, atmp)
-		# Computing t-a : ai = SUM(j=[1:N] e(j,i)*h(j)t-1		
-		for i in range(n):
-			A = np.dot(E.transpose(), htmp)
+		H, A = np.dot (E, A), np.dot (Et, H)
 		if normalize:
 			for i in range(n):
 				H /= sum(H)				
